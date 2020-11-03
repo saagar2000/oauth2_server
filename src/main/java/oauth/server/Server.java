@@ -1,5 +1,6 @@
 package oauth.server;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerEndpointsConfiguration;
 import org.springframework.context.annotation.Configuration;
@@ -20,10 +21,13 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
-@Import(AuthorizationServerEndpointsConfiguration.class)
+@Import({AuthorizationServerEndpointsConfiguration.class})
 @Configuration
 @Order(2)
+@RequiredArgsConstructor
 public class Server extends AuthorizationServerConfigurerAdapter {
+
+	private final KeyPair keyPair;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -42,29 +46,22 @@ public class Server extends AuthorizationServerConfigurerAdapter {
     }
 
     @Override
-  	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws NoSuchAlgorithmException {
+  	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
   		endpoints
   			.accessTokenConverter(accessTokenConverter())
   			.tokenStore(tokenStore());
   	}
 
     @Bean
-  	public TokenStore tokenStore() throws NoSuchAlgorithmException {
+  	public TokenStore tokenStore() {
   		return new JwtTokenStore(accessTokenConverter());
   	}
 
   	@Bean
-  	public JwtAccessTokenConverter accessTokenConverter() throws NoSuchAlgorithmException {
+  	public JwtAccessTokenConverter accessTokenConverter() {
   		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-  		converter.setKeyPair(keyPair());
+  		converter.setKeyPair(keyPair);
   		return converter;
   	}
 
-	@Bean
-	public KeyPair keyPair() throws NoSuchAlgorithmException {
-		KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
-		gen.initialize(2048);
-		KeyPair keyPair = gen.generateKeyPair();
-		return keyPair;
-	}
 }
