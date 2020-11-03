@@ -21,7 +21,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
-@Import({AuthorizationServerEndpointsConfiguration.class})
+@Import(AuthorizationServerEndpointsConfiguration.class)
 @Configuration
 @Order(2)
 @RequiredArgsConstructor
@@ -60,7 +60,7 @@ public class Server extends AuthorizationServerConfigurerAdapter {
   	@Bean
   	public JwtAccessTokenConverter accessTokenConverter() {
   		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-  		converter.setKeyPair(keyPair);
+		converter.setKeyPair(keyPair);
   		return converter;
   	}
 
