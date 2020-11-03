@@ -54,17 +54,9 @@ public class Server extends AuthorizationServerConfigurerAdapter {
   	}
 
   	@Bean
-  	public JwtAccessTokenConverter accessTokenConverter() throws NoSuchAlgorithmException {
+  	public JwtAccessTokenConverter accessTokenConverter(KeyPair keyPair) throws NoSuchAlgorithmException {
   		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-  		converter.setKeyPair(keyPair());
+  		converter.setKeyPair(keyPair);
   		return converter;
   	}
-
-	@Bean
-	public KeyPair keyPair() throws NoSuchAlgorithmException {
-		KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
-		gen.initialize(2048);
-		KeyPair keyPair = gen.generateKeyPair();
-		return keyPair;
-	}
 }
