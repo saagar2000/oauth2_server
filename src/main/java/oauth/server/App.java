@@ -13,5 +13,13 @@ public class App {
 	public static void main(String[] args) {
 		SpringApplication.run(App.class, args);
 	}
+	
+	@Bean
+	public KeyPair keyPair() throws NoSuchAlgorithmException {
+		KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
+		gen.initialize(2048);
+		KeyPair keyPair = gen.generateKeyPair();
+		return keyPair;
+	}
 
 }
